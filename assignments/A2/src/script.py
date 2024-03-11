@@ -4,7 +4,9 @@
 
 # Importing libraries
 import os
+import sys
 import cv2
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -13,6 +15,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from tensorflow.keras.datasets import cifar10
+
+sys.path.append(os.path.join(".."))
 
 ########
 ## Defining needed functions
@@ -193,7 +197,7 @@ def save_report(report, report_name):
         report (str): Classification report.
         report_name (str): Name of the report file.
     """
-    path = os.path.join("..", "out", f"{report_name}.txt")
+    path = os.path.join("out", f"{report_name}.txt")
     
     with open(path, "w") as report_file:
         report_file.write(report)
@@ -213,7 +217,7 @@ def loss_curve(classifier):
     plt.ylabel('Loss score')
 
     # Saving plot in out folder
-    path = os.path.join("..", "out", "loss_curve_nn.png")
+    path = os.path.join("out", "loss_curve_nn.png")
     plt.savefig(path)
     plt.close()
 
@@ -227,27 +231,43 @@ def main():
     args = parse_arguments()
 
     # Loading data
+    print("Loading data...")
     (X_train, y_train), (X_test, y_test) = cifar10.load_data()
+    print("Data loaded.")
 
     # Preprocessing of the image data
+    print("Preprocessing images...")
     processed_train_array, processed_test_array = preprocessor(X_train, X_test)
+    print("Images preprocessed.")
 
     # Rename labels
+    print("Renaming labels...")
     y_train_lab, y_test_lab = labeler(y_train, y_test)
+    print("Labels renamed.")
 
     if args.model == "logistic":
+        print("Using Logistic Regression model.")
         # Classification using logistic regression
+        print("Training and testing Logistic Regression classifier...")
         classifier, classifier_metrics = logistic_regression_classifier(processed_train_array, y_train_lab, processed_test_array, y_test_lab)
+        print("Logistic Regression classifier trained and tested.")
     elif args.model == "neural":
+        print("Using Neural Network model.")
         # Classification using neural network
+        print("Training and testing Neural Network classifier...")
         classifier, classifier_metrics = neural_network_classifier(processed_train_array, y_train_lab, processed_test_array, y_test_lab)
+        print("Neural Network classifier trained and tested.")
 
     # Saving report
+    print("Saving classification report...")
     save_report(classifier_metrics, f"{args.model}_report")
+    print("Classification report saved.")
 
     # Saving loss curve plot for neural network
     if args.model == "neural":
+        print("Saving loss curve plot for neural network...")
         loss_curve(classifier)
+        print("Loss curve plot for neural network saved.")
 
 if __name__=="__main__":
     main()
