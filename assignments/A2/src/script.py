@@ -170,11 +170,11 @@ def neural_network_classifier(X_train, y_train, X_test, y_test):
     """
     # Defining the model
     classifier = MLPClassifier(
-        activation="logistic",
-        hidden_layer_sizes=(20,),
+        activation="relu",
+        hidden_layer_sizes=(64,),
         max_iter=1000,
         random_state=42,
-        learning_rate_init=0.001
+        verbose = True
     )
     
     # Fitting the model (training)
