@@ -46,6 +46,8 @@ The script saves the results to a CSV file in the output folder. The CSV file co
 ## File Structure
 The project directory should be structured as follows:
 
+```
+.
 project_directory/
 │
 ├── README.md
@@ -60,4 +62,5 @@ project_directory/
 │       └── ...
 │
 └── out/
-    └── 5TOP_similar_images.csv
+    └── 5TOP_similar_images.csv 
+```
