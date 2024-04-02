@@ -1,7 +1,8 @@
-########
-## Assignment 1 - Building a simple image search algorithm
-########
+#!/usr/bin/python
 
+"""
+Assignment 1 - Building a simple image search algorithm
+"""
 # Importing packages
 import os
 import sys
@@ -10,10 +11,6 @@ import numpy as np
 import pandas as pd
 
 sys.path.append(os.path.join(".."))
-
-########
-## Making functions
-########
 
 # Defining function for extracting the color histogram for an image 
 def extract_color_hist(image_path):
@@ -28,6 +25,7 @@ def extract_color_hist(image_path):
     """
     
     image = cv2.imread(image_path)
+
     if image is None:
         raise FileNotFoundError(f"Image not found: {image_path}")
 
@@ -60,36 +58,38 @@ def compare_histograms(target_histogram, histograms_list):
 
     return distances
 
-########
-## Running the functions and getting the comparisons
-#######
-
-# Defining folder paths
-INPUT_FOLDER = os.path.join("..","in", "flowers")
-OUTPUT_FOLDER = os.path.join("..","out")
-
 # Function to save results to CSV
 def save_to_csv(data, filename):
     df = pd.DataFrame(data, columns = ["Filename", "Distance"])
     df.to_csv(os.path.join(OUTPUT_FOLDER, filename), index = False)
 
-# Extract histograms for all images in the folder
-histograms_list = [(image_filename, extract_color_hist(os.path.join(INPUT_FOLDER, image_filename)))
-                   for image_filename in os.listdir(INPUT_FOLDER)]
+# Main function
 
-# Define path for target image
-target_image_path = os.path.join(INPUT_FOLDER, "image_1009.jpg")
+def main():
+    # Defining folder paths
+    INPUT_FOLDER = os.path.join("..","in", "flowers")
+    OUTPUT_FOLDER = os.path.join("..","out")
 
-# Extract histogram for the target image
-target_histogram = extract_color_hist(target_image_path)
+    # Extract histograms for all images in the folder
+    histograms_list = [(image_filename, extract_color_hist(os.path.join(INPUT_FOLDER, image_filename)))
+                       for image_filename in os.listdir(INPUT_FOLDER)]
 
-# Compare histograms
-distances = compare_histograms(target_histogram, histograms_list)
+    # Define path for target image
+    target_image_path = os.path.join(INPUT_FOLDER, "image_1009.jpg")
 
-# Sort the distances list based on the distances (second element of each tuple)
-top_5_closest = sorted(distances, key=lambda x: x[1])[:5]
+    # Extract histogram for the target image
+    target_histogram = extract_color_hist(target_image_path)
 
-# Save results to CSV
-save_to_csv(top_5_closest, "5TOP_similar_images.csv")
+    # Compare histograms
+    distances = compare_histograms(target_histogram, histograms_list)
 
-print("CSV file saved in the out folder.")
+    # Sort the distances list based on the distances (second element of each tuple)
+    top_5_closest = sorted(distances, key=lambda x: x[1])[:5]
+
+    # Save results to CSV
+    save_to_csv(top_5_closest, "5TOP_similar_images.csv")
+
+    print("CSV file saved in the out folder.")
+
+if __name__ == "__main__":
+    main()
