@@ -1,30 +1,67 @@
-# Assignment 3 - Document classification using pretrained image embeddings
+# Assignment 3 - Document Classification using Pretrained Image Embeddings
 
-In Language Analytics so far, we've done lots of document classification based on linguistic features of documents. This week, we are working on a slightly different problem - can we predict what type of document we have based only on its *appearance* rather than its contents?
+This script is developed as part of Assignment 3 for Language Analytics course. The goal of this assignment is to classify documents based solely on their visual appearance, rather than their textual content. This is achieved by leveraging pretrained image embeddings and Convolutional Neural Networks (CNNs).
 
-Think about how different documents look when written on a page. A poem appears differently to a newpaper article, both of which are different from a billboard advertisement. This assignment tries to leverage this knowledge to try to predict what type of document we have, based on its visual appearance.
+## Usage
 
-For this assignment, we'll be working with the *```Tobacco3482```* dataset. You can learn more about this dataset in the original paper which uses it [here](https://dl.acm.org/doi/pdf/10.1145/1148170.1148307). The dataset we are working with is only a small subset of this larger corpus.
+To use this script, follow these steps:
 
-You should write code which does the following:
+1. Ensure you have all the necessary dependencies installed. You can install them using `pip install -r requirements.txt`.
 
-- Loads the *```Tobacco3482```* data and generates labels for each image
-- Train a classifier to predict document type based on visual features
-- Present a classification report and learning curves for the trained classifier
-- Your repository should **also** include a short description of what the classification report and learning curve show.
+2. Make sure you have access to the Tobacco3482 dataset. You can download it [here](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download)
 
-## Data access
+3. Run the script using the following command:
 
-The data for the assignment is available in the shared drive on UCloud. For the purposes of this assignment, you can link to [this version](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download) in your README files.
+   ```
+   python script.py --data_path <path_to_image_data> --output_dir <output_directory_path>
+   ```
 
+   - `data_path`: Path to the image data directory.
+   - `output_dir`: Directory where the results will be saved.
 
-## Tips
-- The images are arranged into folders which have the label name for those images
-- The training data comprises 3842 images across 10 different document types. Running code might be quite slow - be sure to plan accordingly.
-- You should structure your project by having scripts saved in a folder called ```src```, and have a folder called ```out``` where you save the classification reports.
+## Functionality
 
-## Purpose
+1. **Loading Data**: The script loads images from the specified data path. Each image is associated with a label indicating its document type.
 
-- To demonstrate that you can use ```tensorflow``` to train Convolutional Neural Networks
-- To synthesize existing skills to create pipelines for transfer learning with pretrained CNNs
-- To show understanding of how to interpret machine learning outputs
+2. **Preprocessing Images**: Images are preprocessed to prepare them for input into the VGG16 model. Preprocessing includes resizing, converting to arrays, and applying preprocessing specific to the VGG16 model.
+
+3. **Building Model**: A CNN model based on VGG16 architecture is constructed with additional classification layers. The model is compiled using Adam optimizer and categorical crossentropy loss.
+
+4. **Training the Model**: The model is trained on the preprocessed image data. Training is performed for a fixed number of epochs with a validation split. Training history including loss and accuracy curves are plotted and saved.
+
+5. **Evaluation**: The trained model is evaluated using the test data. A classification report is generated and saved to assess the performance of the model.
+
+## Results
+
+### Classification Report
+
+The classification report provides insights into the performance of the model. It includes metrics such as precision, recall, and F1-score for each class, along with overall accuracy.
+
+### Learning Curves
+
+Learning curves depict the training and validation loss, as well as training and validation accuracy over epochs. These curves help in understanding the model's convergence and potential overfitting or underfitting issues.
+
+## Project Structure
+
+The project should be structured as follows:
+
+```
+project_root/
+│
+├── src/
+│   └── script.py               # Main script for document classification
+│
+├── data/
+│   └── Tobacco3482/            # Directory containing image data
+│
+├── out/
+│   └── classification_report.txt  # Classification report saved here
+│   └── training_curves.png     # Plot of training curves
+│
+└── README.md                   # README file explaining the project and usage
+```
+
+## Notes
+
+- Ensure that you have sufficient computational resources as running the script might be computationally intensive, especially during training.
+- This script demonstrates the usage of TensorFlow for training CNNs and interpreting machine learning outputs.
