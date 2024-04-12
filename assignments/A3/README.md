@@ -35,11 +35,11 @@ To use this script, follow these steps:
 
 ### Classification Report
 
-The classification report provides insights into the performance of the model. It includes metrics such as precision, recall, and F1-score for each class, along with overall accuracy. 
+This classification report evaluates a model's performance in classifying various types of documents. It shows precision (accuracy of positive predictions), recall (coverage of actual positives), and F1-score (balance between precision and recall) for each class. Overall accuracy is 70%. Some classes like "ADVE," "Email," and "News" perform well, while others like "Report," "Resume," and "Scientific" need improvement.
 
 ### Learning Curves
 
-Learning curves depict the training and validation loss, as well as training and validation accuracy over epochs. These curves help in understanding the model's convergence and potential overfitting or underfitting issues.
+Learning curves illustrate the progression of training and validation loss alongside training and validation accuracy across epochs. They serve to reveal the model's convergence and identify potential overfitting or underfitting. The loss curve demonstrates a consistent decrease in both training and validation loss over epochs, indicating improved model performance. Similarly, the accuracy curve depicts a gradual increase with each epoch, signifying the model's learning process.
 
 ## Project Structure
 
@@ -48,15 +48,15 @@ The project should be structured as follows:
 ```
 project_root/
 │
-├── src/
-│   └── script.py               # Main script for document classification
-│
-├── data/
+├── in/
 │   └── Tobacco3482/            # Directory containing image data
 │
 ├── out/
 │   └── classification_report.txt  # Classification report saved here
 │   └── training_curves.png     # Plot of training curves
+│
+├── src/
+│   └── script.py               # Main script for document classification
 │
 └── README.md                   # README file explaining the project and usage
 ```
