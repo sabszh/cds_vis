@@ -35,7 +35,7 @@ To use this script, follow these steps:
 
 ### Classification Report
 
-The classification report provides insights into the performance of the model. It includes metrics such as precision, recall, and F1-score for each class, along with overall accuracy.
+The classification report provides insights into the performance of the model. It includes metrics such as precision, recall, and F1-score for each class, along with overall accuracy. 
 
 ### Learning Curves
 

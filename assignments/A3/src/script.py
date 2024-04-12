@@ -156,8 +156,8 @@ def main(data_path, output_dir):
     lb = LabelBinarizer()
     labels = lb.fit_transform([image["label"] for image in images])
 
-    # Split data into train and test sets
-    X_train, X_test, y_train, y_test = train_test_split(processed_images, labels, test_size=0.2, random_state=42)
+    # Split data into train and test sets with stratification by label
+    X_train, X_test, y_train, y_test = train_test_split(processed_images, labels, test_size=0.2, random_state=42, stratify=labels)
 
     # Build and compile the model
     model = build_model(len(labelNames))
@@ -179,7 +179,7 @@ def main(data_path, output_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Document classification using pretrained image embeddings")
-    parser.add_argument("--data_path", type=str, default="../data/Tobacco3482", help="Path to image data")
-    parser.add_argument("--output_dir", type=str, default="../out", help="Directory to save results")
+    parser.add_argument("--data_path", type=str, default="in/Tobacco3482", help="Path to image data")
+    parser.add_argument("--output_dir", type=str, default="out", help="Directory to save results")
     args = parser.parse_args()
     main(args.data_path, args.output_dir)
