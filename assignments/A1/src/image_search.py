@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 """
 Assignment 1 - Building a simple image search algorithm
 """
@@ -21,120 +20,117 @@ import matplotlib.image as mpimg
 
 sys.path.append(os.path.join(".."))
 
-# Defining function for extracting the color histogram for an image 
-def extract_color_hist(image_path):
-    """
-    Extracts color histograms for a single image.
+# Defining histogram class
+class HistogramImageSearch:
+    def __init__(self, dataset_dir):
+        self.dataset_dir = dataset_dir
+        self.histograms_list = self.extract_histograms()
 
-    Args:
-        image_path (str): Path to the image file.
+    def extract_histogram(self, image_path):
+        image = cv2.imread(image_path)
 
-    Returns:
-        numpy.ndarray: A numpy array containing histograms for each channel (red, green, blue).
-    """
-    
-    image = cv2.imread(image_path)
+        if image is None:
+            raise FileNotFoundError(f"Image not found: {image_path}")
 
-    if image is None:
-        raise FileNotFoundError(f"Image not found: {image_path}")
+        # Split channels
+        channels = cv2.split(image)
 
-    # Split channels
-    channels = cv2.split(image)
+        histograms = [cv2.calcHist([channel], [0], None, [255], [0, 256]) for channel in channels]
+        histograms = np.concatenate(histograms)
 
-    histograms = [cv2.calcHist([channel], [0], None, [255], [0, 256]) for channel in channels]
-    histograms = np.concatenate(histograms)
+        # Normalize histogram
+        histograms = cv2.normalize(histograms, histograms, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)
 
-    # Normalize histogram
-    histograms = cv2.normalize(histograms, histograms, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)
+        return histograms
 
-    return histograms
+    def extract_histograms(self):
+        histograms_list = [(image_filename, self.extract_histogram(os.path.join(self.dataset_dir, image_filename)))
+                           for image_filename in os.listdir(self.dataset_dir)]
+        return histograms_list
 
-# Making function for comparing histograms
-def compare_histograms(target_histogram, histograms_list):
-    """
-    Compares the histogram of a target image to other histograms using Chi-Squared distance.
+    def compare_histograms(self, target_histogram):
+        distances = [(filename, round(cv2.compareHist(target_histogram, histogram, cv2.HISTCMP_CHISQR), 2))
+                     for filename, histogram in self.histograms_list]
+        return distances
 
-    Args:
-        target_histogram (numpy.ndarray): Histogram of the target image.
-        histograms_list (list): List containing tuples of (filename, histograms) for all images.
+    def find_similar_images(self, target_image_path, num_neighbors=5):
+        target_histogram = self.extract_histogram(target_image_path)
 
-    Returns:
-        list: A list of tuples where each tuple contains the filename and the Chi-Squared distance
-              between the target image histogram and the histogram of each image in the dataset.
-    """
-    distances = [(filename, round(cv2.compareHist(target_histogram, histogram, cv2.HISTCMP_CHISQR), 2))
-                 for filename, histogram in histograms_list]
+        distances = self.compare_histograms(target_histogram)
 
-    return distances
+        # Exclude the target image itself from the list of similar images
+        distances = [(filename, distance) for filename, distance in distances if filename != os.path.basename(target_image_path)]
 
-# Using VGG16 and KNN
-def extract_features(img_path, model):
-    """
-    Extract features from image data using pretrained model (e.g. VGG16)
-    """
-    input_shape = (224, 224, 3)
-    img = load_img(img_path, target_size=(input_shape[0], input_shape[1]))
-    img_array = img_to_array(img)
-    expanded_img_array = np.expand_dims(img_array, axis=0)
-    preprocessed_img = preprocess_input(expanded_img_array)
-    features = model.predict(preprocessed_img, verbose=False)
-    flattened_features = features.flatten()
-    normalized_features = flattened_features / norm(features)
-    return normalized_features
+        top_n_closest = sorted(distances, key=lambda x: x[1])[:num_neighbors]
 
-def find_similar_images(target_image_path, dataset_dir, num_neighbors=5):
-    model = VGG16(weights='imagenet', include_top=False, pooling='avg', input_shape=(224, 224, 3))
+        return top_n_closest
 
-    target_features = extract_features(target_image_path, model)
+# Defining VGG16 class
+class VGG16ImageSearch:
+    def __init__(self, dataset_dir):
+        self.dataset_dir = dataset_dir
+        self.model = VGG16(weights='imagenet', include_top=False, pooling='avg', input_shape=(224, 224, 3))
+        self.filenames = [os.path.join(self.dataset_dir, name) for name in sorted(os.listdir(self.dataset_dir))]
 
-    filenames = [os.path.join(dataset_dir, name) for name in sorted(os.listdir(dataset_dir))]
+    def extract_features(self, img_path):
+        input_shape = (224, 224, 3)
+        img = load_img(img_path, target_size=(input_shape[0], input_shape[1]))
+        img_array = img_to_array(img)
+        expanded_img_array = np.expand_dims(img_array, axis=0)
+        preprocessed_img = preprocess_input(expanded_img_array)
+        features = self.model.predict(preprocessed_img, verbose=False)
+        flattened_features = features.flatten()
+        normalized_features = flattened_features / norm(features)
+        return normalized_features
 
-    feature_list = []
-    for filename in tqdm(filenames, desc="Extracting features"):
-        feature_list.append(extract_features(filename, model))
+    def find_similar_images(self, target_image_path, num_neighbors=5):
+        target_features = self.extract_features(target_image_path)
 
-    neighbors = NearestNeighbors(n_neighbors=num_neighbors + 1, algorithm='brute', metric='cosine').fit(feature_list)
+        feature_list = [self.extract_features(filename) for filename in tqdm(self.filenames, desc="Extracting features")]
 
-    distances, indices = neighbors.kneighbors([target_features])
+        neighbors = NearestNeighbors(n_neighbors=num_neighbors + 1, algorithm='brute', metric='cosine').fit(feature_list)
 
-    similar_images = []
-    for i in range(1, num_neighbors + 1):
-        similar_images.append(filenames[indices[0][i]])
+        distances, indices = neighbors.kneighbors([target_features])
 
-    return similar_images
+        similar_images = []
+        for i in range(1, num_neighbors + 1):
+            similar_images.append((os.path.basename(self.filenames[indices[0][i]]), distances[0][i]))
+
+        return similar_images
 
 # Function to save results to CSV
 def save_to_csv(data, filename):
-    df = pd.DataFrame(data, columns = ["Filename", "Distance"])
-    df.to_csv(os.path.join(OUTPUT_FOLDER, filename), index = False)
+    df = pd.DataFrame(data, columns=["Filename", "Distance"])
+    df.to_csv(filename, index=False)
 
 # Main function
-
 def main():
+    parser = argparse.ArgumentParser(description="Image search algorithm")
+    parser.add_argument("target_image", help="Path to the target image")
+    parser.add_argument("output_csv", help="Output CSV file path")
+    parser.add_argument("--method", choices=["histogram", "vgg"], default="histogram", help="Method for image search")
+    args = parser.parse_args()
+
     # Defining folder paths
     INPUT_FOLDER = os.path.join("in", "flowers")
-    OUTPUT_FOLDER = os.path.join("..","out")
 
-    # Extract histograms for all images in the folder
-    histograms_list = [(image_filename, extract_color_hist(os.path.join(INPUT_FOLDER, image_filename)))
-                       for image_filename in os.listdir(INPUT_FOLDER)]
+    target_image_path = args.target_image
+    
+    if args.method == "histogram":
+        image_search = HistogramImageSearch(INPUT_FOLDER)
+        similar_images = image_search.find_similar_images(target_image_path)
+    elif args.method == "vgg":
+        image_search = VGG16ImageSearch(INPUT_FOLDER)
+        similar_images = image_search.find_similar_images(target_image_path)
 
-    # Define path for target image
-    target_image_path = os.path.join(INPUT_FOLDER, "image_1009.jpg")
+    # Include the target image as the first entry in the CSV
+    target_filename = os.path.basename(target_image_path)
+    target_distance = 0.0  # Distance to the target image is 0
+    data = [(target_filename, target_distance)]
+    # Add other similar images
+    data.extend(similar_images)
 
-    # Extract histogram for the target image
-    target_histogram = extract_color_hist(target_image_path)
-
-    # Compare histograms
-    distances = compare_histograms(target_histogram, histograms_list)
-
-    # Sort the distances list based on the distances (second element of each tuple)
-    top_5_closest = sorted(distances, key=lambda x: x[1])[:5]
-
-    # Save results to CSV
-    save_to_csv(top_5_closest, "5TOP_similar_images.csv")
-
-    print("CSV file saved in the out folder.")
+    save_to_csv(data, args.output_csv)
 
 if __name__ == "__main__":
     main()

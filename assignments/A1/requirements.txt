@@ -4,6 +4,7 @@ pandas
 scikit-learn
 numpy
 pandas
+tqdm
 opencv-python
 tensorflow-cpu
 tensorflow-hub
