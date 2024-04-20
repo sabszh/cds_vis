@@ -1,3 +1,9 @@
-opencv-python==4.9.0.80
-matplotlib==3.8.3
-pandas==2.2.1
+opencv-python
+matplotlib
+pandas
+scikit-learn
+numpy
+pandas
+opencv-python
+tensorflow-cpu
+tensorflow-hub
