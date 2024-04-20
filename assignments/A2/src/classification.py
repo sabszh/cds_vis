@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 """
 Assignment 2 - Classification benchmarks with Logistic Regression and Neural Networks
 """
