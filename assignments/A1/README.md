@@ -11,8 +11,7 @@ This script is designed to perform a simple image search algorithm based on colo
 ## Installation
 1. Clone the repository: git clone <https://github.com/sabszh/cds_vis/tree/main/assignments/A1>
 
-2. Install the required dependencies: pip install -r requirements.txt
-
+2. Install the required dependencies: bash setup.sh
 
 ## Usage
 1. Ensure your images are stored in a folder.

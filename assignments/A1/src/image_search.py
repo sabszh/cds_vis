@@ -9,6 +9,7 @@ import sys
 import cv2
 import numpy as np
 import pandas as pd
+import argparse
 
 sys.path.append(os.path.join(".."))
 
@@ -67,7 +68,7 @@ def save_to_csv(data, filename):
 
 def main():
     # Defining folder paths
-    INPUT_FOLDER = os.path.join("..","in", "flowers")
+    INPUT_FOLDER = os.path.join("in", "flowers")
     OUTPUT_FOLDER = os.path.join("..","out")
 
     # Extract histograms for all images in the folder
