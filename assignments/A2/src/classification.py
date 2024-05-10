@@ -1,6 +1,8 @@
 #!/usr/bin/python
 """
 Assignment 2 - Classification benchmarks with Logistic Regression and Neural Networks
+Course: Visual Analytics
+Author: Sabrina Zaki Hansen
 """
 
 # Importing libraries
@@ -34,9 +36,11 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description="Classification benchmarks with Logistic Regression and Neural Networks")
     parser.add_argument("--model",
                         choices=["logistic", "neural"],
-                        default="logistic",
                         help="Choose classification model (logistic or neural)")
-    return parser.parse_args()
+    
+    args = parser.parse_args()
+
+    return args
 
 # Grayscaling of training images
 def grayscaler(image_array):
@@ -247,22 +251,25 @@ def main():
     print("Labels renamed.")
 
     if args.model == "logistic":
-        print("Using Logistic Regression model.")
         # Classification using logistic regression
+        print("Using Logistic Regression model.")
         print("Training and testing Logistic Regression classifier...")
         classifier, classifier_metrics = logistic_regression_classifier(processed_train_array, y_train_lab, processed_test_array, y_test_lab)
         print("Logistic Regression classifier trained and tested.")
     elif args.model == "neural":
-        print("Using Neural Network model.")
         # Classification using neural network
+        print("Using Neural Network model.")
         print("Training and testing Neural Network classifier...")
         classifier, classifier_metrics = neural_network_classifier(processed_train_array, y_train_lab, processed_test_array, y_test_lab)
         print("Neural Network classifier trained and tested.")
 
     # Saving report
     print("Saving classification report...")
-    save_report(classifier_metrics, f"{args.model}_report")
-    print("Classification report saved.")
+    if classifier_metrics:
+        save_report(classifier_metrics, f"{args.model}_report")
+        print("Classification report saved.")
+    else:
+        print("Error: Classification metrics not available.")
 
     # Saving loss curve plot for neural network
     if args.model == "neural":

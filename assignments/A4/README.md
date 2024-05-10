@@ -55,3 +55,41 @@ The data for the assignment is available in the shared drive on UCloud. For the 
 - To demonstrate that you can pretrained CNNs to extract meaningful information from image data
 - To convey the kinds of datasets and problems encountered doing image processing for cultural analytics
 - To show understanding of how to interpret machine learning outputs
+
+## Usage
+To use this script, follow these steps:
+
+1. Clone or download the repository and make sure you have the file structure as pointed out, and the needed files stored in `in`
+
+## Discussion of Limitations and Possible Steps to Improvement
+
+
+## File Structure
+The project directory should be structured as follows:
+
+```
+.
+A4/
+│
+├── in/
+│   └── newspapers/
+│        ├── GDL/
+│        │   ├── <filename>.jpg
+│        │   └── ...
+│        ├── IMP/
+│        │   ├── <filename>.jpg
+│        │   └── ...
+││       ├── JDG/
+│        │   ├── <filename>.jpg
+│        │   └── ...
+│        └── README-images.txt
+├── out/
+│   └── newspaper_sample_face_counts.csv
+├── src/
+│   └── newspaper_face_detection.py
+│
+├── README.md
+├── requirements.txt
+├── run.sh
+└── setup.sh
+```

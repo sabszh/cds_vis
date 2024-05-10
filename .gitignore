@@ -1,5 +1,23 @@
+# Ignore files related to Assignment 1
 assignments/A1/in/flowers
+assignments/A1/venv
+
+# Ignore files related to Assignment 2
+assignments/A2/venv
+
+# Ignore files related to Assignment 3
 assignments/A3/in/Tobacco3482
-assignments/A4/data/newspapers
+assignments/A3/venv
+
+# Ignore files related to Assignment 4
+assignments/A4/in/newspapers
+assignments/A4/in/newspapers sample
+assignments/A4/venv
+
+# Class stuff ignore
 in-class/src/intermediate_python_data
 in-class/data
+utils
+
+# Ignore git_config.sh script
+git_config.sh

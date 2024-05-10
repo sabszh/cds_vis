@@ -1,7 +1,10 @@
 #!/usr/bin/python
 """
-Assignment 1 - Building a simple image search algorithm
+Assignment: 1 - Building a simple image search algorithm
+Course: Visual Analytics
+Author: Sabrina Zaki Hansen
 """
+
 # Importing packages
 import os
 import sys
@@ -19,6 +22,21 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 sys.path.append(os.path.join(".."))
+
+# Defining argument parsing
+def parse_arguments():
+    """
+    Parse command-line arguments.
+
+    Returns:
+        argparse.Namespace: Parsed arguments.
+    """
+    parser = argparse.ArgumentParser(description="Image search algorithm")
+    parser.add_argument("target_image", help="Path to the target image")
+    parser.add_argument("--method", choices=["histogram", "vgg"], default="histogram", help="Method for image search")
+    args = parser.parse_args()
+
+    return args
 
 # Defining histogram class
 class HistogramImageSearch:
@@ -101,21 +119,23 @@ class VGG16ImageSearch:
 # Function to save results to CSV
 def save_to_csv(data, filename):
     df = pd.DataFrame(data, columns=["Filename", "Distance"])
+    df["Distance"] = df["Distance"].round(2) 
     df.to_csv(filename, index=False)
 
 # Main function
 def main():
-    parser = argparse.ArgumentParser(description="Image search algorithm")
-    parser.add_argument("target_image", help="Path to the target image")
-    parser.add_argument("output_csv", help="Output CSV file path")
-    parser.add_argument("--method", choices=["histogram", "vgg"], default="histogram", help="Method for image search")
-    args = parser.parse_args()
+    """
+    Main function to execute the script.
+    """
+    # Parse the arguments
+    args = parse_arguments()
+
+    target_image_path = args.target_image
 
     # Defining folder paths
     INPUT_FOLDER = os.path.join("in", "flowers")
+    OUTPUT_FOLDER = os.path.join("out", f"results_{args.method}.csv")
 
-    target_image_path = args.target_image
-    
     if args.method == "histogram":
         image_search = HistogramImageSearch(INPUT_FOLDER)
         similar_images = image_search.find_similar_images(target_image_path)
@@ -127,10 +147,11 @@ def main():
     target_filename = os.path.basename(target_image_path)
     target_distance = 0.0  # Distance to the target image is 0
     data = [(target_filename, target_distance)]
+
     # Add other similar images
     data.extend(similar_images)
 
-    save_to_csv(data, args.output_csv)
+    save_to_csv(data, OUTPUT_FOLDER)
 
 if __name__ == "__main__":
     main()

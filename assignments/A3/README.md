@@ -3,10 +3,9 @@
 This script is developed as part of Assignment 3 for Language Analytics course. The goal of this assignment is to classify documents based solely on their visual appearance, rather than their textual content. This is achieved by leveraging pretrained image embeddings and Convolutional Neural Networks (CNNs).
 
 ## Usage
-
 To use this script, follow these steps:
 
-1. Ensure you have all the necessary dependencies installed. You can install them using `pip install -r requirements.txt`.
+1. Clone or download the repository and make sure you have the file structure as pointed out, and the needed files stored in `in`
 
 2. Make sure you have access to the Tobacco3482 dataset. You can download it [here](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download)
 
@@ -41,27 +40,34 @@ This classification report evaluates a model's performance in classifying variou
 
 Learning curves illustrate the progression of training and validation loss alongside training and validation accuracy across epochs. They serve to reveal the model's convergence and identify potential overfitting or underfitting. The loss curve demonstrates a consistent decrease in both training and validation loss over epochs, indicating improved model performance. Similarly, the accuracy curve depicts a gradual increase with each epoch, signifying the model's learning process.
 
-## Project Structure
+## Discussion of Limitations and Possible Steps to Improvement
 
-The project should be structured as follows:
+
+## File Structure
+The project directory should be structured as follows:
 
 ```
-project_root/
+.
+A3/
 │
 ├── in/
-│   └── Tobacco3482/            # Directory containing image data
+│   └── Tobacco3482/
+│        ├── ADVE/
+│        │   ├── <filename>.jpg
+│        │   └── ...
+│        ├── Email/
+│        │   ├── <filename>.jpg
+│        │   └── ...
+│        └── ...
 │
 ├── out/
-│   └── classification_report.txt  # Classification report saved here
-│   └── training_curves.png     # Plot of training curves
-│
+│   ├── classification_Report.txt
+│   └── training_curves.png
 ├── src/
-│   └── script.py               # Main script for document classification
+│   └── doc_classification.py
 │
-└── README.md                   # README file explaining the project and usage
+├── README.md
+├── requirements.txt
+├── run.sh
+└── setup.sh
 ```
-
-## Notes
-
-- Ensure that you have sufficient computational resources as running the script might be computationally intensive, especially during training.
-- This script demonstrates the usage of TensorFlow for training CNNs and interpreting machine learning outputs.
