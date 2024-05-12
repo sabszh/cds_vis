@@ -137,17 +137,13 @@ def build_model(num_classes):
 # Main function
 ######
 
-def main(data_path, output_dir):
+def main():
     """
     Main function to load data, build and train the model, and save results.
-
-    Args:
-    - data_path (str): Path to image data.
-    - output_dir (str): Directory to save results.
-
-    Returns:
-    - None
     """
+    data_path = os.path.join("in","Tobacco3482")
+    output_dir = os.path.join("out")
+
     # Load data
     images = load_data(data_path)
     processed_images = preprocess_images(images)
@@ -181,8 +177,4 @@ def main(data_path, output_dir):
         f.write(report)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Document classification using pretrained image embeddings")
-    parser.add_argument("--data_path", type=str, default="in/Tobacco3482", help="Path to image data")
-    parser.add_argument("--output_dir", type=str, default="out", help="Directory to save results")
-    args = parser.parse_args()
-    main(args.data_path, args.output_dir)
+    main()

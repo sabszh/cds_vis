@@ -145,7 +145,7 @@ def main():
 
     # Include the target image as the first entry in the CSV
     target_filename = os.path.basename(target_image_path)
-    target_distance = 0.0  # Distance to the target image is 0
+    target_distance = 0.0
     data = [(target_filename, target_distance)]
 
     # Add other similar images

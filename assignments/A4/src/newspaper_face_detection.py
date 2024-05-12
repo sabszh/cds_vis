@@ -6,17 +6,6 @@ import matplotlib.pyplot as plt
 from facenet_pytorch import MTCNN, InceptionResnetV1
 from PIL import Image
 
-def parse_arguments():
-    """
-    Parse command-line arguments.
-
-    Returns:
-        Namespace: An object containing parsed arguments.
-    """
-    parser = argparse.ArgumentParser(description="Detect faces in historical newspapers.")
-    parser.add_argument("data_path", type=str, help="Path to the folder containing newspaper images.")
-    return parser.parse_args()
-
 
 def detect_faces(data_path):
     """
@@ -112,7 +101,7 @@ def main():
     Main function.
     """
     args = parse_arguments()
-    data_path = args.data_path
+    data_path = os.path.join("in","newspapers sample")
 
     results = detect_faces(data_path)
     grouped_results = group_by_decade(results)

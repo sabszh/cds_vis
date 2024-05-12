@@ -42,11 +42,72 @@ To use this script, follow these steps:
 
 
 ## Output Summary
-- Classification report: Saved as a text file containing precision, recall, and F1-score.
-- Loss curve plot (for Neural Network): Saved as an image in the `out` folder.
+
+The script exports three files to the output folder: two text files containing the classification reports and a plot depicting the loss curve of the neural network classification. The texts files includes details such as class names, precision, recall, F1-score, support, accuracy, as well as macro and weighted averages.
+
+### Table 1: Classification Report for Logistic Regression
+| Class      | Precision | Recall | F1-Score | Support |
+|------------|-----------|--------|----------|---------|
+| airplane   | 0.34      | 0.39   | 0.36     | 1000    |
+| automobile | 0.29      | 0.31   | 0.30     | 1000    |
+| bird       | 0.21      | 0.16   | 0.18     | 1000    |
+| cat        | 0.18      | 0.14   | 0.16     | 1000    |
+| deer       | 0.21      | 0.16   | 0.18     | 1000    |
+| dog        | 0.27      | 0.25   | 0.26     | 1000    |
+| frog       | 0.21      | 0.19   | 0.20     | 1000    |
+| horse      | 0.24      | 0.28   | 0.26     | 1000    |
+| ship       | 0.33      | 0.35   | 0.34     | 1000    |
+| truck      | 0.32      | 0.43   | 0.37     | 1000    |
+|            |           |        |          |         |
+| Accuracy   |           |        | 0.27     | 10000   |
+| Macro Avg  | 0.26      | 0.27   | 0.26     | 10000   |
+| Weighted Avg | 0.26    | 0.27   | 0.26     | 10000   |
+
+### Table 2: Classification Report for Neural Network 
+| Class      | Precision | Recall | F1-Score | Support |
+|------------|-----------|--------|----------|---------|
+| airplane   | 0.34      | 0.33   | 0.34     | 1000    |
+| automobile | 0.29      | 0.27   | 0.28     | 1000    |
+| bird       | 0.22      | 0.23   | 0.22     | 1000    |
+| cat        | 0.17      | 0.16   | 0.17     | 1000    |
+| deer       | 0.20      | 0.19   | 0.20     | 1000    |
+| dog        | 0.26      | 0.25   | 0.26     | 1000    |
+| frog       | 0.27      | 0.26   | 0.26     | 1000    |
+| horse      | 0.25      | 0.32   | 0.28     | 1000    |
+| ship       | 0.38      | 0.36   | 0.37     | 1000    |
+| truck      | 0.29      | 0.29   | 0.29     | 1000    |
+|            |           |        |          |         |
+| Accuracy   |           |        | 0.27     | 10000   |
+| Macro Avg  | 0.27      | 0.27   | 0.27     | 10000   |
+| Weighted Avg | 0.27    | 0.27   | 0.27     | 10000   |
+
+The classification reports for logistic regression and neural network models on the CIFAR-10 dataset provide insights into their performance across different classes. Both models achieve an accuracy of 0.27, indicating that they correctly classify approximately 27% of the test images.
+
+For logistic regression, precision, recall, and F1-score values range from 0.18 to 0.37 across different classes. For the neural network, similar values are observed, ranging from 0.17 to 0.38.
+
+These metrics measure the models' ability to correctly classify instances of each class (precision), their ability to capture all relevant instances of each class (recall), and the balance between precision and recall (F1-score). Overall, the performance across classes is relatively consistent between the two models.
+
+The macro average calculates the metrics independently for each class and then takes the unweighted mean of the scores. For both models, the macro average precision, recall, and F1-score are around 0.27.
+
+Weighted average considers the support (the number of true instances for each label) when computing the average. Again, the values are consistent between the logistic regression and neural network models, with weighted average precision, recall, and F1-score around 0.27.
+
+The models' performance is moderate, as indicated by the relatively low precision, recall, and F1-scores across classes.
+
+Both models struggle particularly with classes like bird, cat, and deer, where precision, recall, and F1-scores are lower compared to other classes.
+
+Despite their limitations, the models achieve a balanced performance across classes, as evident from the consistent macro and weighted averages.
+
+### Figure 3: Loss Curve Plot (Neral Network classification)
+![Loss Curve Plot (NN)](out/loss_curve_nn.png)
+
+The loss curve specifically shows a declining curve, indicating that the loss score descreases as the number of training iterations increases, meaning that the neural network is effectively learning andi mproving its performance as training progresses. The convergence of the loss curve towards a value close to 0.5 suggests that the model reaches a stable state where further iterations do not significantly reduce the loss score. 
 
 ## Discussion of Limitations and Possible Steps to Improvement
+The provided code implements classification benchmarks using logistic regression and neural networks on the CIFAR-10 dataset for image recognition. While the code performs the intended tasks, there are several limitations and potential areas for improvement. The models achieve an overall accuracy of 0.27, indicating moderate performance. However, precision, recall, and F1-scores across classes range from 0.17 to 0.38, suggesting room for improvement.
 
+Currently the models employ default hyperparamters, which could be the cause for not getting the best performance. Conduction hyperparameter tuning using techniques like grid search could help in optimizing the performance and improve the classification. Moreover, an area of improvment could be to increase the diversity of the training data by augumenting the data, such as rotating, flipping, and/or scaling. By doing this, it could potentially improve the models' generalization capability and performance on unseen data. Another suggestions for improvement in accuracy, would be to test out some more complex model archeitehcues, such as CNN, which could perhaps capture more patterns in the data and imrpove the classification accuracy. 
+
+In conclusion, while the logistic regression and neural network models demonstrate moderate performance on the CIFAR-10 dataset, there is room for improvement, especially in handling specific classes more effectively. Further optimization through hyperparameter tuning, data augmentation, and model architecture adjustments could enhance their classification accuracy and robustness.
 
 ## File Structure
 The project directory should be structured as follows:
@@ -59,6 +120,7 @@ A2/
 │   ├── logistic_report.txt
 │   ├── loss_curve_nn.png
 │   └── neural_report.txt
+│
 ├── src/
 │   └── classification.py
 │
