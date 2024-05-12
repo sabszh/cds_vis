@@ -1,10 +1,7 @@
-opencv-python
-matplotlib
-pandas
-scikit-learn
-numpy
-pandas
-tqdm
-opencv-python
-tensorflow-cpu
-tensorflow-hub
+matplotlib==3.8.4
+numpy==1.26.4
+pandas==2.2.2
+scikit_learn==1.4.2
+tensorflow==2.16.1
+tensorflow_hub==0.16.1
+tqdm==4.66.4
