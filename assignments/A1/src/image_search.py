@@ -23,7 +23,11 @@ import matplotlib.image as mpimg
 
 sys.path.append(os.path.join(".."))
 
-# Defining argument parsing
+########
+## Defining needed functions
+########
+
+# Argument parsing
 def parse_arguments():
     """
     Parse command-line arguments.
@@ -122,7 +126,9 @@ def save_to_csv(data, filename):
     df["Distance"] = df["Distance"].round(2) 
     df.to_csv(filename, index=False)
 
+###### 
 # Main function
+######
 def main():
     """
     Main function to execute the script.
