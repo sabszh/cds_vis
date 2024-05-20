@@ -32,7 +32,6 @@ import matplotlib.pyplot as plt
 # Defining functions
 ######
 
-# Plotting
 def plot_history(H, epochs, output_dir):
     """
     Function to plot loss and accuracy curves.
@@ -65,7 +64,6 @@ def plot_history(H, epochs, output_dir):
     plt.savefig(os.path.join(output_dir, "training_curves.png"))
     plt.show()
 
-# Loading data
 def load_data(data_path):
     """
     Load image data from the specified path.
@@ -91,7 +89,6 @@ def load_data(data_path):
 
     return images
 
-# Preprocess images
 def preprocess_images(images):
     """
     Preprocess images for VGG model.
@@ -108,7 +105,6 @@ def preprocess_images(images):
 
     return processed_images
 
-# Building model
 def build_model(num_classes):
     """
     Build and compile the VGG model with new classification layers.

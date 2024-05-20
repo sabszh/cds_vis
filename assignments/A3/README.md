@@ -1,9 +1,15 @@
 # Assignment 3 - Document Classification using Pretrained Image Embeddings
-
-The goal of this assignment is to classify documents based solely on their visual appearance, rather than their textual content. This is achieved by leveraging pretrained image embeddings and Convolutional Neural Networks (CNNs).
+The goal of this assignment is to classify documents based solely on their visual appearance, rather than usually the textual content. This is achieved by leveraging pretrained image embeddings and Convolutional Neural Networks (CNNs).
 
 ## Data source
 The dataset used for this task is the Tobacco3482 dataset. The dataset consists of document images belonging to 10 classes such as letter, form, emial, resume, memo, etc. The dataset has 3482 images. You can find it [here](https://www.kaggle.com/datasets/patrickaudriaz/tobacco3482jpg?resource=download)
+
+## Requirements
+- Python > 3.10.12
+- `matplotlib` library
+- `numpy` library
+- `scikit_learn` library
+- `tensorflow` library
 
 ## Usage
 To use this script, follow these steps:
@@ -85,6 +91,7 @@ A3/
 ├── out/
 │   ├── classification_Report.txt
 │   └── training_curves.png
+│
 ├── src/
 │   └── doc_classification.py
 │
