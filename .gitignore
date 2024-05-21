@@ -21,3 +21,7 @@ utils
 
 # Ignore git_config.sh script
 git_config.sh
+assignments/A4/venv/bin/python
+assignments/A4/venv/bin/python3
+assignments/A4/venv/bin/python3.10
+assignments/A4/venv/pyvenv.cfg
